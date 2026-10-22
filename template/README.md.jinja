@@ -1,0 +1,40 @@
+# {{ project_name }}
+
+{{ description }}
+
+## Requirements
+
+- Python 3.14
+- [uv](https://docs.astral.sh/uv/)
+
+## Setup
+
+```bash
+uv sync
+uv run pre-commit install
+cp .env.example .env
+```
+
+## Run
+
+```bash
+uv run fastapi dev src/main.py
+```
+
+The health check is served at http://127.0.0.1:8000/health.
+
+## Checks
+
+```bash
+uv run ruff check .
+uv run ruff format .
+uv run pytest
+```
+
+## Template updates
+
+Generated from [fastapi-service-template](https://github.com/darimanner/fastapi-service-template). Pull template changes with:
+
+```bash
+uvx copier update
+```
