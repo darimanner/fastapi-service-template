@@ -1,0 +1,22 @@
+_subdirectory: template
+
+project_name:
+  type: str
+  help: Project name, lowercase words joined by hyphens
+  default: "{{ _folder_name }}"
+  validator: "{% if not (project_name | regex_search('^[a-z][a-z0-9]*(-[a-z0-9]+)*$')) %}Use lowercase letters, digits and single hyphens{% endif %}"
+
+description:
+  type: str
+  help: One line project description
+  default: FastAPI service
+
+author_name:
+  type: str
+  help: Author name
+  default: Kostiantyn Durlov
+
+author_email:
+  type: str
+  help: Author email
+  default: konstantin_durlov.dev@protonmail.com
