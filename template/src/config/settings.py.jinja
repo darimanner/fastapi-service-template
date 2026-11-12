@@ -1,11 +1,36 @@
+from typing import Literal
+
+from pydantic import BaseModel, ValidationError
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+class AppSettings(BaseModel):
+    name: str = "{{ project_name }}"
 
-    app_name: str = "{{ project_name }}"
+
+class LoggerSettings(BaseModel):
+    level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = "INFO"
     debug: bool = False
 
 
-settings = Settings()
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(
+        env_file=".env", env_nested_delimiter="__", extra="ignore"
+    )
+
+    app: AppSettings = AppSettings()
+    logger: LoggerSettings = LoggerSettings()
+
+
+def load_settings() -> Settings:
+    try:
+        return Settings()
+    except ValidationError as e:
+        lines = [
+            f"  {'__'.join(map(str, err['loc'])).upper()}: {err['msg']}"
+            for err in e.errors()
+        ]
+        raise SystemExit("Invalid configuration:\n" + "\n".join(lines)) from None
+
+
+settings = load_settings()
