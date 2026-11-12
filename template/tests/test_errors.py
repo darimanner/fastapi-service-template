@@ -1,0 +1,54 @@
+from fastapi.testclient import TestClient
+
+from src.core.exceptions.base import NotFoundError
+from src.main import create_app
+
+app = create_app()
+
+
+@app.get("/missing")
+async def missing() -> None:
+    raise NotFoundError("Item 1 not found")
+
+
+@app.get("/boom")
+async def boom() -> None:
+    raise RuntimeError("secret internals")
+
+
+@app.get("/typed")
+async def typed(limit: int) -> int:
+    return limit
+
+
+client = TestClient(app, raise_server_exceptions=False)
+
+
+def test_app_error_is_a_problem_response() -> None:
+    response = client.get("/missing", headers={"X-Request-ID": "r1"})
+
+    assert response.status_code == 404
+    assert response.headers["content-type"] == "application/problem+json"
+    assert response.json() == {
+        "type": "not-found",
+        "title": "Not Found",
+        "status": 404,
+        "detail": "Item 1 not found",
+        "instance": "/missing",
+        "request_id": "r1",
+    }
+
+
+def test_validation_error_lists_fields() -> None:
+    response = client.get("/typed", params={"limit": "x"})
+
+    assert response.status_code == 422
+    assert [e["field"] for e in response.json()["errors"]] == ["query.limit"]
+
+
+def test_unexpected_error_hides_details() -> None:
+    response = client.get("/boom", headers={"X-Request-ID": "r2"})
+
+    assert response.status_code == 500
+    assert response.json()["detail"] == "Internal Server Error"
+    assert response.json()["request_id"] == "r2"

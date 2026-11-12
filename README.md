@@ -7,6 +7,7 @@
 - `src/` layout with an app factory and a health route
 - typed nested settings (`pydantic-settings`, `SECTION__KEY` env vars) that exit with a readable message on bad config
 - structlog logging: JSON by default, console output with `LOGGER__DEBUG=true`, secrets masked, a request id and an access log line per request
+- RFC 7807 error responses (`application/problem+json`) for `AppError` subclasses, request validation and unexpected exceptions
 - `pyproject.toml` with project metadata, dev dependencies, pytest and ruff config
 - ruff limits on function and class size: complexity, branches, statements, arguments, locals, nesting, public methods
 - `uv.lock` for the default dependency set
@@ -35,6 +36,7 @@ my-service/
   src/
     api/health.py
     config/settings.py
+    core/exceptions/
     core/observability/
     main.py
   tests/
