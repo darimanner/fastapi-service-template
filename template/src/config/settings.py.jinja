@@ -1,6 +1,6 @@
-from typing import Literal
+from typing import Annotated, Literal
 
-from pydantic import BaseModel, PostgresDsn, ValidationError
+from pydantic import BaseModel, PostgresDsn, UrlConstraints, ValidationError
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -14,7 +14,7 @@ class LoggerSettings(BaseModel):
 
 
 class DatabaseSettings(BaseModel):
-    url: PostgresDsn
+    url: Annotated[PostgresDsn, UrlConstraints(allowed_schemes=["postgresql+asyncpg"])]
 
 
 class Settings(BaseSettings):
