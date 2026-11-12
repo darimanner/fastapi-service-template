@@ -6,6 +6,7 @@
 
 - `src/` layout with typed settings (`pydantic-settings`) and a health route
 - `pyproject.toml` with project metadata, dev dependencies, pytest and ruff config
+- ruff limits on function and class size: complexity, branches, statements, arguments, locals, nesting, public methods
 - `uv.lock` for the default dependency set
 - `.python-version` pinned to 3.14
 - `.pre-commit-config.yaml` with ruff, a uv lock check and basic file hygiene hooks

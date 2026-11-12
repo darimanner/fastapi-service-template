@@ -25,6 +25,8 @@ testpaths = ["tests"]
 line-length = 90
 
 [tool.ruff.lint]
+preview = true
+explicit-preview-rules = true
 select = [
     "E",
     "F",
@@ -41,15 +43,29 @@ select = [
     "PTH",
     "ERA",
     "PGH",
+    "PL",
+    "PLR0904",
+    "PLR0914",
+    "PLR0916",
+    "PLR1702",
 ]
 ignore = ["ANN401", "S104"]
 
 [tool.ruff.lint.per-file-ignores]
 "**/__init__.py" = ["F401"]
-"tests/**" = ["S101"]
+"tests/**" = ["S101", "PLR2004"]
 
 [tool.ruff.lint.mccabe]
 max-complexity = 8
+
+[tool.ruff.lint.pylint]
+max-branches = 8
+max-returns = 4
+max-statements = 30
+max-public-methods = 10
+max-locals = 10
+max-nested-blocks = 3
+max-bool-expr = 3
 
 [tool.ruff.lint.isort]
 combine-as-imports = true
