@@ -17,7 +17,9 @@
 - `.pre-commit-config.yaml` with ruff, mypy, a uv lock check and basic file hygiene hooks
 - Alembic migrations configured in `pyproject.toml`, new revisions formatted by ruff
 - tests on pytest-asyncio with a real PostgreSQL from testcontainers: the schema is built by the migrations, `alembic check` fails the run on model drift, every test is rolled back
-- a GitHub Actions workflow that runs the pre-commit hooks and the tests
+- `compose.yaml` with PostgreSQL 18 for local development
+- multi-stage `Dockerfile` on uv: non-root user, healthcheck, no dev dependencies
+- a GitHub Actions workflow that runs the pre-commit hooks, the tests and the image build
 
 ## Usage
 
@@ -25,6 +27,9 @@
 uvx copier copy gh:darimanner/fastapi-service-template my-service
 cd my-service
 uv sync
+cp .env.example .env
+docker compose up -d --wait
+uv run alembic upgrade head
 uv run fastapi dev src/main.py
 ```
 
@@ -44,9 +49,12 @@ my-service/
     core/observability/
     main.py
   tests/
+  .dockerignore
   .env.example
   .pre-commit-config.yaml
   .python-version
+  compose.yaml
+  Dockerfile
   pyproject.toml
   uv.lock
 ```

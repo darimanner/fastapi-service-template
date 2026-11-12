@@ -6,6 +6,7 @@
 
 - Python 3.14
 - [uv](https://docs.astral.sh/uv/)
+- Docker
 
 ## Setup
 
@@ -13,6 +14,8 @@
 uv sync
 uv run pre-commit install
 cp .env.example .env
+docker compose up -d --wait
+uv run alembic upgrade head
 ```
 
 ## Run
@@ -44,6 +47,16 @@ uv run alembic upgrade head
 ```
 
 New revision files are formatted with ruff automatically.
+
+## Docker image
+
+```bash
+docker build -t {{ project_name }} .
+docker run --rm -e DATABASE__URL=... {{ project_name }} alembic upgrade head
+docker run -p 8000:8000 -e DATABASE__URL=... {{ project_name }}
+```
+
+The image runs as a non-root user and does not migrate on startup: run migrations as a separate deploy step.
 
 ## Template updates
 

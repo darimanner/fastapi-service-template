@@ -29,6 +29,7 @@ uv run ruff check . && uv run ruff format --check .
 uv run mypy
 uv run pytest
 git init -q && git add -A && uv run pre-commit run --all-files
+docker build .
 ```
 
 `--vcs-ref HEAD` includes uncommitted changes of the template. CI (`.github/workflows/ci.yml`) runs the same steps on every push and pull request.
