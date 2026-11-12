@@ -4,15 +4,25 @@ import os
 os.environ.setdefault("DATABASE__URL", "postgresql+asyncpg://test:test@localhost/test")
 
 from collections.abc import AsyncIterator, Iterator
+from pathlib import Path
 
+from alembic import command
+from alembic.config import Config
 from httpx import ASGITransport, AsyncClient
 import pytest
+from sqlalchemy import Connection
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, create_async_engine
 from testcontainers.community.postgres import PostgresContainer
 
-from src.core.db.model import Base
 from src.core.db.sessions import get_db
 from src.main import app
+
+
+def migrate(connection: Connection) -> None:
+    config = Config(toml_file=Path(__file__).parents[1] / "pyproject.toml")
+    config.attributes["connection"] = connection
+    command.upgrade(config, "head")
+    command.check(config)
 
 
 @pytest.fixture(scope="session")
@@ -25,7 +35,7 @@ def postgres_url() -> Iterator[str]:
 async def engine(postgres_url: str) -> AsyncIterator[AsyncEngine]:
     engine = create_async_engine(postgres_url)
     async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+        await conn.run_sync(migrate)
     yield engine
     await engine.dispose()
 

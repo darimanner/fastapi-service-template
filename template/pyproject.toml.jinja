@@ -6,6 +6,7 @@ authors = [{ name = {{ author_name | tojson }}, email = {{ author_email | tojson
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
+    "alembic>=1.20.1",
     "asyncpg>=0.32.0",
     "fastapi[standard]>=0.159.1",
     "pydantic-settings>=2.16.1",
@@ -32,8 +33,24 @@ asyncio_default_test_loop_scope = "session"
 
 [tool.mypy]
 strict = true
-files = ["src", "tests"]
+files = ["src", "tests", "migrations"]
 plugins = ["pydantic.mypy"]
+
+[tool.alembic]
+script_location = "%(here)s/migrations"
+prepend_sys_path = ["."]
+
+[[tool.alembic.post_write_hooks]]
+name = "ruff_check"
+type = "module"
+module = "ruff"
+options = "check --fix REVISION_SCRIPT_FILENAME"
+
+[[tool.alembic.post_write_hooks]]
+name = "ruff_format"
+type = "module"
+module = "ruff"
+options = "format REVISION_SCRIPT_FILENAME"
 
 [tool.ruff]
 line-length = 90

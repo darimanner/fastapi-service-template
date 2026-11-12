@@ -15,7 +15,8 @@
 - `.python-version` pinned to 3.14
 - strict mypy over `src` and `tests`
 - `.pre-commit-config.yaml` with ruff, mypy, a uv lock check and basic file hygiene hooks
-- tests on pytest-asyncio with a real PostgreSQL from testcontainers, rolled back after each test
+- Alembic migrations configured in `pyproject.toml`, new revisions formatted by ruff
+- tests on pytest-asyncio with a real PostgreSQL from testcontainers: the schema is built by the migrations, `alembic check` fails the run on model drift, every test is rolled back
 - a GitHub Actions workflow that runs the pre-commit hooks and the tests
 
 ## Usage
@@ -34,6 +35,7 @@ Copier asks for the project name, description and author. To pull later template
 ```
 my-service/
   .github/workflows/ci.yml
+  migrations/
   src/
     api/health.py
     config/settings.py
