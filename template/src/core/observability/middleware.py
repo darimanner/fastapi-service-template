@@ -5,6 +5,8 @@ from fastapi import Request, Response
 from starlette.middleware.base import RequestResponseEndpoint
 import structlog
 
+from src.core.exceptions.handlers import unexpected_error_handler
+
 log = structlog.get_logger()
 
 
@@ -17,7 +19,10 @@ async def request_context(
         request_id=request_id, method=request.method, path=request.url.path
     )
     started = time.perf_counter()
-    response = await call_next(request)
+    try:
+        response = await call_next(request)
+    except Exception as exc:
+        response = await unexpected_error_handler(request, exc)
     response.headers["X-Request-ID"] = request_id
     log.info(
         "request.completed",

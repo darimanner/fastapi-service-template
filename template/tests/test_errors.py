@@ -65,5 +65,6 @@ def test_unexpected_error_hides_details() -> None:
     response = client.get("/boom", headers={"X-Request-ID": "r2"})
 
     assert response.status_code == 500
+    assert response.headers["X-Request-ID"] == "r2"
     assert response.json()["detail"] == "Internal Server Error"
     assert response.json()["request_id"] == "r2"

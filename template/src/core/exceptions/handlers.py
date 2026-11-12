@@ -66,4 +66,3 @@ def register_exception_handlers(app: FastAPI) -> None:
     app.exception_handler(AppError)(app_error_handler)
     app.exception_handler(HTTPException)(http_error_handler)
     app.exception_handler(RequestValidationError)(validation_error_handler)
-    app.exception_handler(Exception)(unexpected_error_handler)
