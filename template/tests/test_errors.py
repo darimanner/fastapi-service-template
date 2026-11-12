@@ -46,6 +46,21 @@ def test_validation_error_lists_fields() -> None:
     assert [e["field"] for e in response.json()["errors"]] == ["query.limit"]
 
 
+def test_unknown_route_is_a_problem_response() -> None:
+    response = client.get("/nowhere")
+
+    assert response.status_code == 404
+    assert response.headers["content-type"] == "application/problem+json"
+    assert response.json()["type"] == "not-found"
+
+
+def test_http_error_keeps_headers() -> None:
+    response = client.post("/missing")
+
+    assert response.status_code == 405
+    assert response.headers["allow"] == "GET"
+
+
 def test_unexpected_error_hides_details() -> None:
     response = client.get("/boom", headers={"X-Request-ID": "r2"})
 
