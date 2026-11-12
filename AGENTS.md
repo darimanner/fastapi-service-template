@@ -26,6 +26,7 @@ uvx copier copy --defaults --vcs-ref HEAD . /tmp/render
 cd /tmp/render
 uv sync --locked
 uv run ruff check . && uv run ruff format --check .
+uv run mypy
 uv run pytest
 git init -q && git add -A && uv run pre-commit run --all-files
 ```
@@ -36,11 +37,11 @@ git init -q && git add -A && uv run pre-commit run --all-files
 
 ```bash
 uvx copier copy --defaults --vcs-ref HEAD --data project_name=lock-placeholder . /tmp/lock
-(cd /tmp/lock && uv lock --upgrade)
+(cd /tmp/lock && uv lock)
 sed 's/^name = "lock-placeholder"$/name = "{{ project_name }}"/' /tmp/lock/uv.lock > template/uv.lock.jinja
 ```
 
-Then run the verification above.
+Use `uv lock --upgrade` instead to refresh every pin. Then run the verification above.
 
 ## Commits
 

@@ -18,3 +18,12 @@ repos:
     rev: 0.13.4
     hooks:
       - id: uv-lock
+
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy
+        entry: uv run mypy
+        language: unsupported
+        types: [python]
+        pass_filenames: false

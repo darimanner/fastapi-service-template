@@ -9,7 +9,8 @@
 - ruff limits on function and class size: complexity, branches, statements, arguments, locals, nesting, public methods
 - `uv.lock` for the default dependency set
 - `.python-version` pinned to 3.14
-- `.pre-commit-config.yaml` with ruff, a uv lock check and basic file hygiene hooks
+- strict mypy over `src` and `tests`
+- `.pre-commit-config.yaml` with ruff, mypy, a uv lock check and basic file hygiene hooks
 - a smoke test for the health route
 
 ## Usage
