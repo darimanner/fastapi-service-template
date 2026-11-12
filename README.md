@@ -13,7 +13,7 @@
 - ruff limits on function and class size: complexity, branches, statements, arguments, locals, nesting, public methods
 - `uv.lock` for the default dependency set
 - `.python-version` pinned to 3.14
-- strict mypy over `src` and `tests`
+- strict mypy over `src`, `tests` and `migrations`
 - `.pre-commit-config.yaml` with ruff, mypy, a uv lock check and basic file hygiene hooks
 - Alembic migrations configured in `pyproject.toml`, new revisions formatted by ruff
 - tests on pytest-asyncio with a real PostgreSQL from testcontainers: the schema is built by the migrations, `alembic check` fails the run on model drift, every test is rolled back
