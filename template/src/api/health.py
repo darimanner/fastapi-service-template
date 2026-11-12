@@ -1,7 +1,11 @@
+import asyncio
+
 from fastapi import APIRouter
 from sqlalchemy import text
+from sqlalchemy.exc import SQLAlchemyError
 
 from src.core.db.sessions import DbSession
+from src.core.exceptions.base import ServiceUnavailableError
 
 router = APIRouter(prefix="/health", include_in_schema=False)
 
@@ -13,5 +17,9 @@ async def live() -> dict[str, str]:
 
 @router.get("/ready")
 async def ready(db: DbSession) -> dict[str, str]:
-    await db.execute(text("SELECT 1"))
+    try:
+        async with asyncio.timeout(2):
+            await db.execute(text("SELECT 1"))
+    except (OSError, SQLAlchemyError) as exc:
+        raise ServiceUnavailableError("Database is unreachable") from exc
     return {"status": "ok"}
