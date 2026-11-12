@@ -31,7 +31,7 @@ uv run pytest
 git init -q && git add -A && uv run pre-commit run --all-files
 ```
 
-`--vcs-ref HEAD` includes uncommitted changes of the template.
+`--vcs-ref HEAD` includes uncommitted changes of the template. CI (`.github/workflows/ci.yml`) runs the same steps on every push and pull request.
 
 ## Regenerate the lock file
 
