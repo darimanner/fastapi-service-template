@@ -1,0 +1,22 @@
+from fastapi.testclient import TestClient
+
+from src.core.observability.logging import mask_secrets
+from src.main import app
+
+client = TestClient(app)
+
+
+def test_request_id_is_echoed() -> None:
+    response = client.get("/health", headers={"X-Request-ID": "abc"})
+
+    assert response.headers["X-Request-ID"] == "abc"
+
+
+def test_request_id_is_generated() -> None:
+    assert client.get("/health").headers["X-Request-ID"]
+
+
+def test_mask_secrets() -> None:
+    event = mask_secrets(None, "info", {"password": "p", "user": "u"})
+
+    assert event == {"password": "***", "user": "u"}
