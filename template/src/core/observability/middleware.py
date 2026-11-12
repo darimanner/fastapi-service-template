@@ -1,3 +1,4 @@
+import re
 import time
 from uuid import uuid4
 
@@ -8,12 +9,15 @@ import structlog
 from src.core.exceptions.handlers import unexpected_error_handler
 
 log = structlog.get_logger()
+REQUEST_ID = re.compile(r"[A-Za-z0-9._-]{1,64}")
 
 
 async def request_context(
     request: Request, call_next: RequestResponseEndpoint
 ) -> Response:
-    request_id = request.headers.get("X-Request-ID") or uuid4().hex
+    request_id = request.headers.get("X-Request-ID", "")
+    if not REQUEST_ID.fullmatch(request_id):
+        request_id = uuid4().hex
     structlog.contextvars.clear_contextvars()
     structlog.contextvars.bind_contextvars(
         request_id=request_id, method=request.method, path=request.url.path

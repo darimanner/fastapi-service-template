@@ -16,6 +16,12 @@ def test_request_id_is_generated() -> None:
     assert client.get("/health/live").headers["X-Request-ID"]
 
 
+def test_malformed_request_id_is_replaced() -> None:
+    response = client.get("/health/live", headers={"X-Request-ID": "a b" + "x" * 100})
+
+    assert len(response.headers["X-Request-ID"]) == 32
+
+
 def test_mask_secrets() -> None:
     event = mask_secrets(None, "info", {"password": "p", "user": "u"})
 
