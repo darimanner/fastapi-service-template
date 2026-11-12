@@ -23,6 +23,6 @@ def test_malformed_request_id_is_replaced() -> None:
 
 
 def test_mask_secrets() -> None:
-    event = mask_secrets(None, "info", {"password": "p", "user": "u"})
+    event = mask_secrets(None, "info", {"Password": "p", "api_key_id": "k", "user": "u"})
 
-    assert event == {"password": "***", "user": "u"}
+    assert event == {"Password": "***", "api_key_id": "***", "user": "u"}
