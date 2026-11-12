@@ -12,6 +12,7 @@
 - strict mypy over `src` and `tests`
 - `.pre-commit-config.yaml` with ruff, mypy, a uv lock check and basic file hygiene hooks
 - a smoke test for the health route
+- a GitHub Actions workflow that runs the pre-commit hooks and the tests
 
 ## Usage
 
@@ -28,6 +29,7 @@ Copier asks for the project name, description and author. To pull later template
 
 ```
 my-service/
+  .github/workflows/ci.yml
   src/
     api/health.py
     config/settings.py
