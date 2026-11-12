@@ -19,7 +19,7 @@ Copier template for FastAPI services. Everything under `template/` is rendered i
 
 ## Verify a change
 
-Render the template into a temporary directory and run the generated project's checks:
+Render the template into a temporary directory and run the generated project's checks. The tests start PostgreSQL through testcontainers, so Docker must be running:
 
 ```bash
 uvx copier copy --defaults --vcs-ref HEAD . /tmp/render

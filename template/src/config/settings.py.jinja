@@ -1,6 +1,6 @@
 from typing import Literal
 
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel, PostgresDsn, ValidationError
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -13,6 +13,10 @@ class LoggerSettings(BaseModel):
     debug: bool = False
 
 
+class DatabaseSettings(BaseModel):
+    url: PostgresDsn
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env", env_nested_delimiter="__", extra="ignore"
@@ -20,6 +24,7 @@ class Settings(BaseSettings):
 
     app: AppSettings = AppSettings()
     logger: LoggerSettings = LoggerSettings()
+    database: DatabaseSettings
 
 
 def load_settings() -> Settings:

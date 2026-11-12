@@ -4,7 +4,8 @@
 
 ## What you get
 
-- `src/` layout with an app factory and a health route
+- `src/` layout with an app factory, liveness and readiness routes
+- async SQLAlchemy 2 on PostgreSQL (asyncpg): declarative `Base` with a constraint naming convention, `TimestampMixin`, a `get_db` session dependency
 - typed nested settings (`pydantic-settings`, `SECTION__KEY` env vars) that exit with a readable message on bad config
 - structlog logging: JSON by default, console output with `LOGGER__DEBUG=true`, secrets masked, a request id and an access log line per request
 - RFC 7807 error responses (`application/problem+json`) for `AppError` subclasses, request validation and unexpected exceptions
@@ -14,7 +15,7 @@
 - `.python-version` pinned to 3.14
 - strict mypy over `src` and `tests`
 - `.pre-commit-config.yaml` with ruff, mypy, a uv lock check and basic file hygiene hooks
-- a smoke test for the health route
+- tests on pytest-asyncio with a real PostgreSQL from testcontainers, rolled back after each test
 - a GitHub Actions workflow that runs the pre-commit hooks and the tests
 
 ## Usage
@@ -36,6 +37,7 @@ my-service/
   src/
     api/health.py
     config/settings.py
+    core/db/
     core/exceptions/
     core/observability/
     main.py

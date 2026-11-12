@@ -1,8 +1,17 @@
 from fastapi import APIRouter
+from sqlalchemy import text
 
-router = APIRouter(tags=["health"])
+from src.core.db.sessions import DbSession
+
+router = APIRouter(prefix="/health", include_in_schema=False)
 
 
-@router.get("/health")
-async def health() -> dict[str, str]:
+@router.get("/live")
+async def live() -> dict[str, str]:
+    return {"status": "ok"}
+
+
+@router.get("/ready")
+async def ready(db: DbSession) -> dict[str, str]:
+    await db.execute(text("SELECT 1"))
     return {"status": "ok"}

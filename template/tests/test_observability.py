@@ -7,13 +7,13 @@ client = TestClient(app)
 
 
 def test_request_id_is_echoed() -> None:
-    response = client.get("/health", headers={"X-Request-ID": "abc"})
+    response = client.get("/health/live", headers={"X-Request-ID": "abc"})
 
     assert response.headers["X-Request-ID"] == "abc"
 
 
 def test_request_id_is_generated() -> None:
-    assert client.get("/health").headers["X-Request-ID"]
+    assert client.get("/health/live").headers["X-Request-ID"]
 
 
 def test_mask_secrets() -> None:

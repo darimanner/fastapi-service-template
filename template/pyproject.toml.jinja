@@ -6,8 +6,10 @@ authors = [{ name = {{ author_name | tojson }}, email = {{ author_email | tojson
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
+    "asyncpg>=0.32.0",
     "fastapi[standard]>=0.159.1",
     "pydantic-settings>=2.16.1",
+    "sqlalchemy[asyncio]>=2.1.8",
     "structlog>=26.1.0",
 ]
 
@@ -16,12 +18,17 @@ dev = [
     "mypy>=2.4.1",
     "pre-commit>=4.7.0",
     "pytest>=9.1.1",
+    "pytest-asyncio>=1.5.0",
     "ruff>=0.17.1",
+    "testcontainers>=4.15.0",
 ]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
+asyncio_default_test_loop_scope = "session"
 
 [tool.mypy]
 strict = true
@@ -61,6 +68,7 @@ ignore = ["ANN401", "S104"]
 [tool.ruff.lint.per-file-ignores]
 "**/__init__.py" = ["F401"]
 "tests/**" = ["S101", "PLR2004"]
+"tests/conftest.py" = ["E402"]
 
 [tool.ruff.lint.mccabe]
 max-complexity = 8

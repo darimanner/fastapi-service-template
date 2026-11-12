@@ -21,9 +21,11 @@ cp .env.example .env
 uv run fastapi dev src/main.py
 ```
 
-The health check is served at http://127.0.0.1:8000/health.
+Health checks are served at http://127.0.0.1:8000/health/live and http://127.0.0.1:8000/health/ready (pings the database).
 
 ## Checks
+
+The tests start PostgreSQL in a container, so Docker must be running.
 
 ```bash
 uv run ruff check .
