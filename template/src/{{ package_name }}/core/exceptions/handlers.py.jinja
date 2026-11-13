@@ -7,8 +7,7 @@ from starlette.exceptions import HTTPException
 import structlog
 
 from {{ package_name }}.core.exceptions.base import AppError, ValidationFailedError
-
-log = structlog.get_logger()
+from {{ package_name }}.core.observability.logging import log
 
 
 def problem(

@@ -2,7 +2,10 @@ import logging
 import sys
 
 import structlog
-from structlog.typing import EventDict, Processor, WrappedLogger
+from structlog.typing import EventDict, FilteringBoundLogger, Processor, WrappedLogger
+
+# A lazy proxy: it picks up the config from setup_logging on first use.
+log: FilteringBoundLogger = structlog.get_logger()
 
 SECRET_PARTS = ("password", "token", "secret", "authorization", "api_key", "cookie")
 
