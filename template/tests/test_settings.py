@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 
 from src.config.settings import load_settings
@@ -16,4 +18,14 @@ def test_invalid_env_exits_with_variable_name(
     monkeypatch.setenv(name, value)
 
     with pytest.raises(SystemExit, match=name):
+        load_settings()
+
+
+def test_missing_database_url_exits_with_variable_name(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.delenv("DATABASE__URL")
+    monkeypatch.chdir(tmp_path)
+
+    with pytest.raises(SystemExit, match="DATABASE__URL: Field required"):
         load_settings()

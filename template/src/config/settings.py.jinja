@@ -1,6 +1,6 @@
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, PostgresDsn, UrlConstraints, ValidationError
+from pydantic import BaseModel, Field, PostgresDsn, UrlConstraints, ValidationError
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -24,7 +24,8 @@ class Settings(BaseSettings):
 
     app: AppSettings = AppSettings()
     logger: LoggerSettings = LoggerSettings()
-    database: DatabaseSettings
+    # Validating an empty default reports DATABASE__URL instead of DATABASE.
+    database: DatabaseSettings = Field(default_factory=dict, validate_default=True)
 
 
 def load_settings() -> Settings:
