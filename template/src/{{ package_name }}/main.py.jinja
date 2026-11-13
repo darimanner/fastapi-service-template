@@ -3,12 +3,12 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from src.api import health
-from src.config.settings import settings
-from src.core.db.sessions import engine
-from src.core.exceptions.handlers import register_exception_handlers
-from src.core.observability.logging import setup_logging
-from src.core.observability.middleware import request_context
+from {{ package_name }}.api import health
+from {{ package_name }}.config.settings import settings
+from {{ package_name }}.core.db.sessions import engine
+from {{ package_name }}.core.exceptions.handlers import register_exception_handlers
+from {{ package_name }}.core.observability.logging import setup_logging
+from {{ package_name }}.core.observability.middleware import request_context
 
 
 @asynccontextmanager

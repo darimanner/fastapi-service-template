@@ -6,7 +6,7 @@ from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException
 import structlog
 
-from src.core.exceptions.base import AppError, ValidationFailedError
+from {{ package_name }}.core.exceptions.base import AppError, ValidationFailedError
 
 log = structlog.get_logger()
 

@@ -13,6 +13,7 @@ Copier template for FastAPI services. Everything under `template/` is rendered i
 
 - Python 3.14, uv, ruff, pytest, pre-commit. Keep `requires-python`, `.python-version` and the lock file in step.
 - Generated code stays minimal and comment free: no example business logic.
+- Python code lives in the package `src/{{ package_name }}/`; `package_name` is computed from `project_name` and never asked. Files that import the package end in `.jinja`.
 - Templates use only the answers defined in `copier.yml`. Every new question needs a default so `--defaults` keeps working.
 - Never edit `template/uv.lock.jinja` by hand. Regenerate it after any dependency change in `template/pyproject.toml.jinja`.
 - Bump the pre-commit hook revisions together with the matching dev dependencies.

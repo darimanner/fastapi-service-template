@@ -1,7 +1,7 @@
 from fastapi.testclient import TestClient
 
-from src.core.observability.logging import mask_secrets
-from src.main import app
+from {{ package_name }}.core.observability.logging import mask_secrets
+from {{ package_name }}.main import app
 
 client = TestClient(app)
 

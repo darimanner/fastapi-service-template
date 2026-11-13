@@ -4,8 +4,8 @@ from fastapi import APIRouter
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
-from src.core.db.sessions import DbSession
-from src.core.exceptions.base import ServiceUnavailableError
+from {{ package_name }}.core.db.sessions import DbSession
+from {{ package_name }}.core.exceptions.base import ServiceUnavailableError
 
 router = APIRouter(prefix="/health", include_in_schema=False)
 

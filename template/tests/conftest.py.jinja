@@ -14,8 +14,8 @@ from sqlalchemy import Connection
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, create_async_engine
 from testcontainers.community.postgres import PostgresContainer
 
-from src.core.db.sessions import get_db
-from src.main import app
+from {{ package_name }}.core.db.sessions import get_db
+from {{ package_name }}.main import app
 
 
 def migrate(connection: Connection) -> None:

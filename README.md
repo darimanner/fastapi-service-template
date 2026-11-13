@@ -4,7 +4,7 @@
 
 ## What you get
 
-- `src/` layout with an app factory, liveness and readiness routes
+- `src/` layout with an installable package named after the project (`my-service` becomes `my_service`), an app factory, liveness and readiness routes
 - async SQLAlchemy 2 on PostgreSQL (asyncpg): declarative `Base` with a constraint naming convention, `TimestampMixin`, a `get_db` session dependency
 - typed nested settings (`pydantic-settings`, `SECTION__KEY` env vars) that exit with a readable message on bad config
 - structlog logging: JSON by default, console output with `LOGGER__DEBUG=true`, secrets masked, a request id and an access log line per request
@@ -30,7 +30,7 @@ uv sync
 cp .env.example .env
 docker compose up -d --wait
 uv run alembic upgrade head
-uv run fastapi dev src/main.py
+uv run fastapi dev src/my_service/main.py
 ```
 
 Copier asks for the project name, description and author. To pull later template changes into a generated project, run `uvx copier update` inside it.
@@ -41,7 +41,7 @@ Copier asks for the project name, description and author. To pull later template
 my-service/
   .github/workflows/ci.yml
   migrations/
-  src/
+  src/my_service/
     api/health.py
     config/settings.py
     core/db/

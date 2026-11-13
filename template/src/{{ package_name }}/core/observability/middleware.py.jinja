@@ -6,7 +6,7 @@ from fastapi import Request, Response
 from starlette.middleware.base import RequestResponseEndpoint
 import structlog
 
-from src.core.exceptions.handlers import unexpected_error_handler
+from {{ package_name }}.core.exceptions.handlers import unexpected_error_handler
 
 log = structlog.get_logger()
 REQUEST_ID = re.compile(r"[A-Za-z0-9._-]{1,64}")

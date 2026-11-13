@@ -21,7 +21,7 @@ uv run alembic upgrade head
 ## Run
 
 ```bash
-uv run fastapi dev src/main.py
+uv run fastapi dev src/{{ package_name }}/main.py
 ```
 
 Health checks are served at http://127.0.0.1:8000/health/live and http://127.0.0.1:8000/health/ready (pings the database).
