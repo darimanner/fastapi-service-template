@@ -18,7 +18,20 @@ make up
 make migrate
 ```
 
-`make install` sets up the git hooks, so run it inside a git repository. `make down` stops the database. Each target is a plain `uv` or `docker compose` command, see `Makefile`.
+`make install` sets up the git hooks, so run it inside a git repository.
+
+## Make targets
+
+| Target | What it runs |
+| --- | --- |
+| `make install` | `uv sync` and `pre-commit install`: dependencies and git hooks |
+| `make up` | `docker compose up -d --wait`: starts PostgreSQL and waits until it is healthy |
+| `make down` | `docker compose down`: stops PostgreSQL, the data volume stays |
+| `make migrate` | `alembic upgrade head`: applies all migrations |
+| `make revision m="..."` | `alembic revision --autogenerate`: new migration from model changes |
+| `make run` | `fastapi dev`: dev server with reload on http://127.0.0.1:8000 |
+| `make test` | `pytest`: tests on a throwaway PostgreSQL container |
+| `make check` | `pre-commit run --all-files`: ruff, mypy, lock check, file hygiene |
 
 ## Run
 
