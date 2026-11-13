@@ -7,21 +7,23 @@
 - Python 3.14
 - [uv](https://docs.astral.sh/uv/)
 - Docker
+- make
 
 ## Setup
 
 ```bash
-uv sync
-uv run pre-commit install
+make install
 cp .env.example .env
-docker compose up -d --wait
-uv run alembic upgrade head
+make up
+make migrate
 ```
+
+`make install` sets up the git hooks, so run it inside a git repository. `make down` stops the database. Each target is a plain `uv` or `docker compose` command, see `Makefile`.
 
 ## Run
 
 ```bash
-uv run fastapi dev src/{{ package_name }}/main.py
+make run
 ```
 
 Health checks are served at http://127.0.0.1:8000/health/live and http://127.0.0.1:8000/health/ready (pings the database).
@@ -31,10 +33,8 @@ Health checks are served at http://127.0.0.1:8000/health/live and http://127.0.0
 The tests start PostgreSQL in a container, so Docker must be running. They build the schema with the migrations and fail if the models have changes no migration covers.
 
 ```bash
-uv run ruff check .
-uv run ruff format .
-uv run mypy
-uv run pytest
+make check   # pre-commit hooks: ruff, mypy, lock check
+make test
 ```
 
 ## Migrations
@@ -42,8 +42,8 @@ uv run pytest
 Import new model modules in `migrations/env.py`, then:
 
 ```bash
-uv run alembic revision --autogenerate -m "add items"
-uv run alembic upgrade head
+make revision m="add items"
+make migrate
 ```
 
 New revision files are formatted with ruff automatically.

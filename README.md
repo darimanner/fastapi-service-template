@@ -20,20 +20,22 @@
 - `compose.yaml` with PostgreSQL 18 for local development
 - multi-stage `Dockerfile` on uv: non-root user, healthcheck, no dev dependencies
 - a GitHub Actions workflow that runs the pre-commit hooks, the tests and the image build
+- a `Makefile` with the everyday commands: `install`, `up`, `down`, `migrate`, `revision`, `run`, `test`, `check`
 
 ## Usage
 
 ```bash
-uvx copier copy gh:darimanner/fastapi-service-template my-service
+uvx copier copy https://github.com/darimanner/fastapi-service-template.git my-service
 cd my-service
-uv sync
+git init
+make install
 cp .env.example .env
-docker compose up -d --wait
-uv run alembic upgrade head
-uv run fastapi dev src/my_service/main.py
+make up
+make migrate
+make run
 ```
 
-Copier asks for the project name, description and author. To pull later template changes into a generated project, run `uvx copier update` inside it.
+Copier asks for the project name, description and author, and generates from the latest release tag. To pull later template changes into a generated project, run `uvx copier update` inside it.
 
 ## Generated layout
 
@@ -55,6 +57,7 @@ my-service/
   .python-version
   compose.yaml
   Dockerfile
+  Makefile
   pyproject.toml
   uv.lock
 ```

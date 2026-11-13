@@ -14,11 +14,13 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@v10.3.3
+        with:
+          cache-dependency-glob: template/uv.lock.jinja
       - run: uvx copier copy --defaults --vcs-ref HEAD . "$RUNNER_TEMP/render"
       - working-directory: ${{ runner.temp }}/render
         run: |
           uv sync --locked
           git init -q && git add -A
-          uv run pre-commit run --all-files
-          uv run pytest
+          make check
+          make test
           docker build .
