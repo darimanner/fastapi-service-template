@@ -25,7 +25,7 @@
 ## Usage
 
 ```bash
-uvx copier copy https://github.com/darimanner/fastapi-service-template.git my-service
+uvx copier copy gh:darimanner/fastapi-service-template my-service
 cd my-service
 git init
 make install
@@ -35,7 +35,7 @@ make migrate
 make run
 ```
 
-Copier asks for the project name, description and author, and generates from the latest release tag. To pull later template changes into a generated project, run `uvx copier update` inside it.
+`gh:` is Copier's shorthand for `https://github.com/`, the GitHub CLI is not needed. Copier asks for the project name, description and author, and generates from the latest release tag. To pull later template changes into a generated project, run `uvx copier update` inside it.
 
 ## Generated layout
 
